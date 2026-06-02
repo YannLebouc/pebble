@@ -1,12 +1,12 @@
-# Argos Cold
+# Argos
 
-**Argos Cold** is an edge-based temperature monitoring platform designed for cold rooms, refrigerated storage, restaurants, food service businesses, and small industrial environments.
+**Argos** is an edge-based temperature monitoring platform designed for cold rooms, refrigerated storage, restaurants, food service businesses, and small industrial environments.
 
 The project explores how low-cost IoT hardware can provide reliable environmental monitoring, local data collection, historical analysis, and real-time alerting without relying on cloud-first architectures.
 
 ---
 
-## Why Argos Cold?
+## Why Argos ?
 
 Temperature excursions inside refrigerated environments can lead to:
 
