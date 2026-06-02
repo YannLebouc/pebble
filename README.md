@@ -1,60 +1,232 @@
-# Argos
+# Argos Cold
 
-An experimental Edge Monitoring & Automation System designed for Smart Buildings and industrial IoT environments. 
+**Argos Cold** is an edge-based temperature monitoring platform designed for cold rooms, refrigerated storage, restaurants, food service businesses, and small industrial environments.
 
-Argos is an architectural exploration of how a lightweight, resilient edge controller can orchestrate distributed micro-automates (sensors/actuators) on a local network without relying on cloud dependencies.
+The project explores how low-cost IoT hardware can provide reliable environmental monitoring, local data collection, historical analysis, and real-time alerting without relying on cloud-first architectures.
+
+---
+
+## Why Argos Cold?
+
+Temperature excursions inside refrigerated environments can lead to:
+
+* food spoilage,
+* regulatory compliance issues,
+* financial losses,
+* equipment failures that remain undetected for hours.
+
+Argos Cold provides a lightweight and affordable monitoring solution built around open technologies and local-first infrastructure.
+
+---
 
 ## Architecture Overview
 
-The system is built as a hybrid, multi-language architecture to optimize performance and development efficiency:
-* **Argos Server (Edge Controller):** Built in Go (Golang) for efficient, asynchronous multi-client networking and high-concurrency stream processing.
-* **Field Nodes (Micro-automates):** Built in modern C++ on ESP32 microcontrollers for direct hardware control and low-level protocol compliance.
+```text
+ESP32 + Sensors
+        |
+        | MQTT
+        v
+   Mosquitto Broker
+        |
+        v
+    Argos Core
+        |
+        +--> SQLite
+        |
+        +--> Alerting
+        |
+        +--> Grafana
+```
 
+### Components
 
+#### ESP32 Sensor Nodes
 
-## Current State & Features
+Field devices responsible for:
 
-Argos is developed incrementally with a focus on understanding networking and system fundamentals from first principles:
-* **Asynchronous TCP Engine:** Multi-client TCP server utilizing Go's native high-concurrency model (Goroutines).
-* **Line-based Protocol:** Stream parsing over TCP for structural validation of incoming environmental data.
-* **Basic Request/Response:** Synchronous acknowledgment workflow between the edge controller and field clients.
-* **Edge Simulation:** Tested locally under Linux environments using standard network utilities (`netcat`).
+* temperature acquisition,
+* humidity acquisition,
+* local measurements publication.
 
-## Roadmap & GTB Strategy (2-3 Weeks Focus)
+Protocols:
 
-The project is moving toward a concrete Smart Building hardware showcase:
-- [ ] **Go Core Migration:** Porting the initial POSIX C++ socket architecture into a clean, concurrent Go network layer.
-- [ ] **Hardware Node (C++):** Deploying an ESP32 node wired to a DS18B20 thermal sensor via a One-Wire bus.
-- [ ] **Local Storage (Mini-WAL):** Implementing an append-only Write-Ahead Log for crash-resilient metric persistence.
-- [ ] **Industrial Standard Exploration:** Transitioning the application layer toward standard automation protocols (Modbus TCP / MQTT).
+* MQTT
 
-## Core Technical Interests
+Hardware:
 
-* **Hybrid Engineering:** Combining C++ (Hardware/Embedded) and Go (Systems/Networking).
-* **Industrial Networking:** Sockets, TCP/IP streams, protocol parsing, and local infrastructure security.
-* **System Resilience:** Fault tolerance, WAL-based data recovery, and edge autonomy.
-* **Observability:** Time-series data logging and localized monitoring.
+* ESP32
+* DS18B20
+* DHT22 (optional)
+
+---
+
+#### Argos Core
+
+Central monitoring service written in Go.
+
+Responsibilities:
+
+* MQTT subscription
+* message validation
+* metric persistence
+* alert evaluation
+* device management
+* monitoring APIs
+
+---
+
+#### SQLite
+
+Local storage for:
+
+* measurements
+* alerts
+* device information
+
+Designed for:
+
+* simplicity
+* portability
+* edge deployments
+
+---
+
+#### Grafana
+
+Visualization layer providing:
+
+* historical temperature charts
+* alert history
+* device dashboards
+* operational monitoring
+
+---
+
+## Current Features
+
+* MQTT telemetry ingestion
+* Local SQLite persistence
+* Historical measurements storage
+* Structured logging
+* Edge-first architecture
+* Grafana integration
+
+---
+
+## Planned Features
+
+### Monitoring
+
+* [ ] Multi-sensor support
+* [ ] Device health monitoring
+* [ ] Battery monitoring
+
+### Alerting
+
+* [ ] Telegram notifications
+* [ ] Email notifications
+* [ ] SMS notifications
+* [ ] Escalation policies
+
+### Industrial Protocols
+
+* [ ] Modbus TCP integration
+* [ ] Energy meter support
+* [ ] Building Management System interoperability
+
+### Operations
+
+* [ ] Docker deployment
+* [ ] Automated backups
+* [ ] Remote updates
+
+---
+
+## Technical Stack
+
+### Backend
+
+* Go
+* MQTT
+* SQLite
+
+### Embedded
+
+* ESP32
+* C++
+* PlatformIO
+
+### Observability
+
+* Grafana
+* Structured logging
+
+### Messaging
+
+* Mosquitto MQTT Broker
+
+---
+
+## Goals
+
+Argos Cold serves three purposes:
+
+### Learning Platform
+
+Exploring:
+
+* IoT architectures
+* MQTT communication
+* edge computing
+* industrial protocols
+* monitoring systems
+
+### Smart Building Laboratory
+
+Providing a practical foundation for:
+
+* GTB / BMS concepts
+* telemetry systems
+* environmental monitoring
+* connected infrastructure
+
+### Real-World Product Exploration
+
+Evaluating the viability of a low-cost monitoring platform for:
+
+* restaurants
+* cold storage facilities
+* wine cellars
+* hospitality
+* small commercial buildings
+
+---
 
 ## Philosophy
 
-Argos strictly follows a **pragmatic, explicit, and anti-over-engineering** philosophy. 
-The goal is to deeply master the underlying systems (network layers, hardware constraints, file I/O operations) before building abstractions. It values software craftsmanship, simple codebases, and physical real-world utility over corporate framework bloat.
+Argos follows a simple principle:
 
-## Getting Started
+> Build practical systems that solve real operational problems.
 
-### Prerequisites
-* Go compiler (1.20+)
-* C++20 compatible compiler & PlatformIO (for ESP32 firmware)
+The project favors:
 
-### Running the Server
+* simplicity,
+* maintainability,
+* observability,
+* reliability,
 
-```bash
-go run main.go
-```
-Testing the Network Layer
-```bash
-nc localhost 8080
-```
+over unnecessary complexity.
+
+---
 
 ## Status
-Active experimental stage. Evolving from a pure network playground into a functional, localized Smart Building telemetry platform.
+
+Active development.
+
+Current focus:
+
+* MQTT infrastructure
+* ESP32 integration
+* temperature monitoring
+* alerting workflows
+* Grafana dashboards
